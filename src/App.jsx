@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { WebApp } from '@twa-dev/sdk';
+import WebApp from '@twa-dev/sdk'; // FIXED: Changed from incorrect import { WebApp }
 
 // Layout Components
 import Header from './components/Layout/Header';
