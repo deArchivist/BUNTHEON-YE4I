@@ -4,16 +4,6 @@ import './styles/tailwind.css';
 import App from './App';
 import { AppProvider } from './contexts/AppContext';
 
-// Set up error logging
-if (process.env.NODE_ENV === 'production') {
-  console.log = (...args) => {
-    // In production, you might want to disable or limit console logs
-    if (args[0] === 'ERROR:' || args[0].includes('error')) {
-      console.error(...args);
-    }
-  };
-}
-
 // Log initial render attempt
 console.log('Starting application...');
 
@@ -41,5 +31,3 @@ try {
      <p>Error: ${error.message}</p>
      <button onclick="window.location.reload()">Try Again</button>`;
 }
-
-// Remove reportWebVitals since we don't need it
