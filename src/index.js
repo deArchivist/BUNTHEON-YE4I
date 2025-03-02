@@ -1,17 +1,47 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
 import './styles/tailwind.css';
 import App from './App';
 import { AppProvider } from './contexts/AppContext';
+import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
+// Set up error logging
+if (process.env.NODE_ENV === 'production') {
+  console.log = (...args) => {
+    // In production, you might want to disable or limit console logs
+    if (args[0] === 'ERROR:' || args[0].includes('error')) {
+      console.error(...args);
+    }
+  };
+}
+
+// Log initial render attempt
+console.log('Starting application...');
+
+try {
+  const container = document.getElementById('root');
+  const root = createRoot(container);
+  
+  // Render with a simple try-catch for better error reporting
+  // REMOVED BrowserRouter from here to avoid conflict with App.jsx
+  root.render(
+    <React.StrictMode>
       <AppProvider>
         <App />
       </AppProvider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+    </React.StrictMode>
+  );
+  
+  console.log('Application rendered successfully');
+} catch (error) {
+  console.error('Failed to render application:', error);
+  
+  // Show fallback content
+  document.getElementById('error-display').style.display = 'block';
+  document.getElementById('error-display').innerHTML = 
+    `<h2>App Failed to Initialize</h2>
+     <p>Error: ${error.message}</p>
+     <button onclick="window.location.reload()">Try Again</button>`;
+}
+
+reportWebVitals();

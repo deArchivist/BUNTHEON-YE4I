@@ -64,12 +64,14 @@ const ChatInterface = () => {
                   ? 'bg-red-100 text-red-700' 
                   : 'bg-gray-100'
             } rounded-lg p-3 max-w-[80%] ${message.role === 'user' ? 'ml-auto' : 'mr-auto'}`}
+            // Add aria-label for accessibility
+            aria-label={message.role === 'user' ? 'Your message' : 'Assistant message'}
           >
             {message.content}
           </div>
         ))}
         {isLoading && (
-          <div className="bg-gray-100 rounded-lg p-3 max-w-[80%] mr-auto animate-pulse">
+          <div className="bg-gray-100 rounded-lg p-3 max-w-[80%] mr-auto animate-pulse" aria-live="polite">
             កំពុងវាយ...
           </div>
         )}
@@ -77,18 +79,22 @@ const ChatInterface = () => {
       </div>
       
       <form onSubmit={handleSendMessage} className="border-t p-4 flex gap-2">
+        <label htmlFor="chat-input" className="sr-only">Message</label>
         <input
+          id="chat-input"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="pixel-input flex-1 rounded-md"
           placeholder="សរសេរសំណួររបស់អ្នកនៅទីនេះ..."
           disabled={isLoading}
+          aria-label="Message input"
         />
         <button 
           type="submit" 
           className="bg-primary text-white px-4 py-2 rounded-md disabled:opacity-50"
           disabled={isLoading || !input.trim()}
+          aria-label="Send message"
         >
           ផ្ញើ
         </button>
