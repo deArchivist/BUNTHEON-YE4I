@@ -1,5 +1,5 @@
-// Using OpenRouter API as documented in official documentation
-const OPENROUTER_API_KEY = "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";
+// Using OpenRouter API with updated API key
+const OPENROUTER_API_KEY = "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";
 const MODEL = "deepseek/deepseek-r1-distill-llama-70b:free";
 
 export const sendMessage = async (messages) => {
