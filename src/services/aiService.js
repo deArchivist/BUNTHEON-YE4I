@@ -1,20 +1,5 @@
-// Fallback implementation for API key that handles missing environment variables
-const getApiKey = () => {
-  // Try to get from environment variable
-  const envKey = process.env.REACT_APP_OPENROUTER_API_KEY;
-  
-  // If environment variable is available, use it
-  if (envKey && envKey !== "") {
-    console.log("Using API key from environment variable");
-    return envKey;
-  }
-  
-  // Otherwise use hardcoded key (not recommended for production)
-  console.warn("Environment variable not found, using fallback API key");
-  return "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";
-};
-
-const OPENROUTER_API_KEY = getApiKey();
+// Using OpenRouter API as documented in official documentation
+const OPENROUTER_API_KEY = "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";
 const MODEL = "deepseek/deepseek-r1-distill-llama-70b:free";
 
 export const sendMessage = async (messages) => {
@@ -26,13 +11,12 @@ export const sendMessage = async (messages) => {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-        'HTTP-Referer': window.location.origin,
-        'X-Title': 'BUNTHEON Education App'
+        'HTTP-Referer': window.location.origin, // Uses the app's origin as the referer
+        'X-Title': 'BUNTHEON Education App' // App name for OpenRouter rankings
       },
       body: JSON.stringify({
         model: MODEL,
-        messages: messages,
-        max_tokens: 1000
+        messages: messages
       }),
     });
 

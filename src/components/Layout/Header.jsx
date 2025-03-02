@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTelegramWebApp } from '../../hooks/useTelegramWebApp';
+import CustomBackButton from '../Navigation/CustomBackButton';
 
 const Header = () => {
   const location = useLocation();
@@ -10,17 +11,19 @@ const Header = () => {
   const getTitle = () => {
     switch (location.pathname) {
       case '/':
-        return 'DeepSeek AI';
+        return 'BUNTHEON';
       case '/prompts':
-        return 'Custom Prompts';
+        return 'Prompts Library';
+      case '/chat':
+        return 'AI Chat';
       case '/dictionary':
-        return 'Khmer-English Dictionary';
+        return 'Dictionary';
       case '/exam-papers':
         return 'Exam Papers';
       case '/reminders':
-        return 'Homework Reminders';
+        return 'Reminders';
       default:
-        return 'AI Learning Buddy';
+        return 'BUNTHEON';
     }
   };
   
@@ -32,9 +35,12 @@ const Header = () => {
   }, [location.pathname, webApp]);
 
   return (
-    <header className="sticky top-0 z-10 bg-primary text-white shadow-md">
-      <div className="container mx-auto py-4 px-4">
-        <h1 className="text-xl font-display font-bold">{getTitle()}</h1>
+    <header className="sticky top-0 bg-primary text-white p-4 shadow-md z-10">
+      <div className="container mx-auto flex items-center justify-center relative">
+        {/* Custom Back Button will show itself when needed */}
+        <CustomBackButton />
+        
+        <h1 className="text-xl font-bold text-center">{getTitle()}</h1>
       </div>
     </header>
   );

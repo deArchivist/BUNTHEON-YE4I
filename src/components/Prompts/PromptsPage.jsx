@@ -57,16 +57,19 @@ const PromptsPage = () => {
   return (
     <div className="py-4">
       <div className="mb-4">
+        <label htmlFor="search-prompts" className="sr-only">Search prompts</label>
         <input
+          id="search-prompts"
           type="text"
           placeholder="Search prompts..."
           className="w-full pixel-input rounded-md"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          aria-label="Search prompts"
         />
       </div>
       
-      <div className="mb-6 overflow-x-auto">
+      <div className="mb-6 overflow-x-auto" role="tablist" aria-label="Prompt categories">
         <div className="flex space-x-2 pb-1">
           {categories.map(category => (
             <button
@@ -77,6 +80,9 @@ const PromptsPage = () => {
                   ? 'bg-primary text-white border-primary' 
                   : 'bg-white text-gray-700 border-gray-300'
               }`}
+              role="tab"
+              aria-selected={activeCategory === category}
+              aria-controls="prompts-panel"
             >
               {category}
             </button>
@@ -84,7 +90,7 @@ const PromptsPage = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 gap-4">
+      <div id="prompts-panel" role="tabpanel" className="grid grid-cols-1 gap-4">
         {filteredPrompts.map(prompt => (
           <PromptCard 
             key={prompt.id} 
