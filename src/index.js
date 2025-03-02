@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './styles/tailwind.css';
 import App from './App';
 import { AppProvider } from './contexts/AppContext';
+import 'katex/dist/katex.min.css';
 
 // Log initial render attempt
 console.log('Starting application...');
