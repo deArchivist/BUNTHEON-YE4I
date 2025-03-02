@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "english": "algorithm",
+    "khmer": "អាល់ហ្គោរីត",
+    "definition": "A process or set of rules to be followed in calculations or other problem-solving operations",
+    "example": "The search algorithm uses historical data to improve results",
+    "subject": "Computer Science"
+  },
+  {
+    "id": 2,
+    "english": "photosynthesis",
+    "khmer": "រស្មីសំយោគ",
+    "definition": "The process by which green plants and some other organisms use sunlight to synthesize foods with carbon dioxide and water",
+    "example": "Photosynthesis occurs in the chloroplasts of plant cells",
+    "subject": "Biology"
+  },
+  {
+    "id": 3,
+    "english": "democracy",
+    "khmer": "លទ្ធិប្រជាធិបតេយ្យ",
+    "definition": "A system of government by the whole population or all eligible members of a state, typically through elected representatives",
+    "example": "Cambodia has been developing its democratic institutions",
+    "subject": "Politics"
+  },
+  {
+    "id": 4,
+    "english": "quadratic equation",
+    "khmer": "សមីការការេ",
+    "definition": "An equation with a squared term as its highest power",
+    "example": "The quadratic formula can solve any quadratic equation",
+    "subject": "Mathematics"
+  },
+  {
+    "id": 5,
+    "english": "metaphor",
+    "khmer": "រូបប្រដូច",
+    "definition": "A figure of speech in which a word or phrase is applied to an object or action that is not literally applicable",
+    "example": "Her tears were a river flowing down her cheeks",
+    "subject": "Literature"
+  },
+  {
+    "id": 6,
+    "english": "momentum",
+    "khmer": "ចលករ",
+    "definition": "The quantity of motion of a moving body, measured as a product of its mass and velocity",
+    "example": "The car's momentum carried it through the intersection",
+    "subject": "Physics"
+  },
+  {
+    "id": 7,
+    "english": "mitosis",
+    "khmer": "មីតូស",
+    "definition": "A type of cell division that results in two daughter cells each having the same number of chromosomes as the parent cell",
+    "example": "Mitosis allows organisms to grow and replace damaged cells",
+    "subject": "Biology"
+  },
+  {
+    "id": 8,
+    "english": "ecosystem",
+    "khmer": "ប្រព័ន្ធអេកូឡូស៊ី",
+    "definition": "A biological community of interacting organisms and their physical environment",
+    "example": "The pond ecosystem includes fish, plants, and microorganisms",
+    "subject": "Environmental Science"
+  },
+  {
+    "id": 9,
+    "english": "variable",
+    "khmer": "អថេរ",
+    "definition": "A symbol for a value that may change within the scope of a given problem or set of operations",
+    "example": "In the equation y = x + 5, x is the variable",
+    "subject": "Mathematics"
+  },
+  {
+    "id": 10,
+    "english": "sovereignty",
+    "khmer": "អធិបតេយ្យភាព",
+    "definition": "Supreme power or authority; the authority of a state to govern itself or another state",
+    "example": "National sovereignty is a fundamental principle of international law",
+    "subject": "Politics"
+  }
+]
