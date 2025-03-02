@@ -36,11 +36,25 @@ const ChatInterface = () => {
     setIsLoading(true);
     
     try {
-      const allMessages = [...messages, userMessage];
-      const response = await sendMessage(allMessages);
+      // Create a properly formatted messages array for the API
+      // The first system message helps set the language context
+      const formattedMessages = [
+        { 
+          role: 'system', 
+          content: 'You are a helpful AI assistant focused on education. Please provide concise and clear answers. When appropriate for Cambodian students, include Khmer translations.' 
+        },
+        ...messages.map(msg => ({
+          role: msg.role,
+          content: msg.content
+        })),
+        userMessage
+      ];
+      
+      const response = await sendMessage(formattedMessages);
       
       setMessages(prev => [...prev, { role: 'assistant', content: response }]);
     } catch (error) {
+      console.error('Chat error:', error);
       setMessages(prev => [...prev, { 
         role: 'assistant', 
         content: 'មានបញ្ហាក្នុងការទទួលបានការឆ្លើយតប។ សូមព្យាយាមម្តងទៀត។',
@@ -64,7 +78,6 @@ const ChatInterface = () => {
                   ? 'bg-red-100 text-red-700' 
                   : 'bg-gray-100'
             } rounded-lg p-3 max-w-[80%] ${message.role === 'user' ? 'ml-auto' : 'mr-auto'}`}
-            // Add aria-label for accessibility
             aria-label={message.role === 'user' ? 'Your message' : 'Assistant message'}
           >
             {message.content}

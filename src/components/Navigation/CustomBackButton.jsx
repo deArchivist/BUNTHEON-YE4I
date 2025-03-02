@@ -7,45 +7,28 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const CustomBackButton = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [telegramBackButtonSupported, setTelegramBackButtonSupported] = useState(true);
+  const [showCustomButton, setShowCustomButton] = useState(false);
   
   // Only show on non-home pages
-  const showBackButton = location.pathname !== '/';
+  const isNotHomePage = location.pathname !== '/';
 
   useEffect(() => {
-    // Check if Telegram BackButton is supported
-    if (window.Telegram && window.Telegram.WebApp) {
-      try {
-        if (location.pathname !== '/') {
-          window.Telegram.WebApp.BackButton.show();
-          window.Telegram.WebApp.BackButton.onClick(() => navigate(-1));
-        } else {
-          window.Telegram.WebApp.BackButton.hide();
-        }
-        // If we get here, BackButton is supported
-        setTelegramBackButtonSupported(true);
-      } catch (error) {
-        console.log("Telegram BackButton not supported, using custom button", error);
-        setTelegramBackButtonSupported(false);
+    // Always show the custom button on non-home pages since Telegram's BackButton isn't supported
+    if (isNotHomePage) {
+      setShowCustomButton(true);
+      
+      // Just for logging - attempt to check if WebApp exists but expect it to fail
+      if (window.Telegram && window.Telegram.WebApp) {
+        // We know BackButton isn't supported, but log it in a way that doesn't trigger errors
+        console.log("Using custom back button as WebApp BackButton isn't supported");
       }
     } else {
-      setTelegramBackButtonSupported(false);
+      setShowCustomButton(false);
     }
-    
-    return () => {
-      // Clean up event listeners if BackButton is supported
-      if (window.Telegram && window.Telegram.WebApp && telegramBackButtonSupported) {
-        try {
-          window.Telegram.WebApp.BackButton.offClick();
-        } catch (error) {
-          // Ignore cleanup errors
-        }
-      }
-    };
-  }, [navigate, location.pathname, telegramBackButtonSupported]);
+  }, [isNotHomePage]);
   
-  // If we're on the home page or Telegram BackButton is supported, don't show our custom button
-  if (!showBackButton || telegramBackButtonSupported) {
+  // If we're on the home page, don't show our custom button
+  if (!showCustomButton) {
     return null;
   }
   

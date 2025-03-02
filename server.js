@@ -4,9 +4,9 @@ const app = express();
 
 // Add security headers and proper content types
 app.use((req, res, next) => {
-  // Security headers
+  // Updated Security headers - added worker-src and blob: to allow web workers
   res.set('X-Content-Type-Options', 'nosniff');
-  res.set('Content-Security-Policy', "default-src 'self' https://openrouter.ai https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://telegram.org;");
+  res.set('Content-Security-Policy', "default-src 'self' https://openrouter.ai https://fonts.googleapis.com https://fonts.gstatic.com; worker-src 'self' blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://telegram.org;");
   
   // Cache control for static assets
   if (req.url.match(/\.(css|js|png|jpg|jpeg|gif|ico|svg)$/)) {

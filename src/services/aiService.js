@@ -1,37 +1,41 @@
-// Using OpenRouter API with updated API key
-const OPENROUTER_API_KEY = "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";
+import OpenAI from 'openai';
+
+const OPENROUTER_API_KEY = "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";
 const MODEL = "deepseek/deepseek-r1-distill-llama-70b:free";
+
+// Initialize OpenAI client with OpenRouter configuration
+const openai = new OpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: OPENROUTER_API_KEY,
+  dangerouslyAllowBrowser: true, // Required for browser usage
+  defaultHeaders: {
+    'HTTP-Referer': window.location.origin, // Uses the app's origin as the referer
+    'X-Title': 'BUNTHEON Education App', // App name for OpenRouter rankings
+  },
+});
 
 export const sendMessage = async (messages) => {
   try {
-    console.log("Sending message to OpenRouter...");
+    console.log("Sending message to OpenRouter using OpenAI client...");
+    console.log("API Key:", OPENROUTER_API_KEY.substring(0, 10) + "...");
+    console.log("Messages:", messages);
     
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-        'HTTP-Referer': window.location.origin, // Uses the app's origin as the referer
-        'X-Title': 'BUNTHEON Education App' // App name for OpenRouter rankings
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: messages
-      }),
+    const completion = await openai.chat.completions.create({
+      model: MODEL,
+      messages: messages,
     });
 
-    console.log("Response received, status:", response.status);
+    console.log("Response received successfully:", completion);
     
-    const data = await response.json();
-    
-    if (!response.ok) {
-      console.error("API error:", data);
-      throw new Error(data.error?.message || 'Failed to get response from AI');
-    }
-
-    return data.choices[0].message.content;
+    return completion.choices[0].message.content;
   } catch (error) {
     console.error('Error calling AI service:', error);
+    if (error.status) {
+      console.error(`Status code: ${error.status}`);
+    }
+    if (error.response) {
+      console.error('Error response:', error.response);
+    }
     throw error;
   }
 };
