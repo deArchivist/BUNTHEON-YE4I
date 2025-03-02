@@ -3,7 +3,8 @@ import { formatMessage } from "../utils/messageFormatter";
 
 // API key for Gemini
 const GEMINI_API_KEY = "AIzaSyD6G2FO1irISjGoyds6jXXrO7MNmY3zNt0";
-const MODEL_NAME = "gemini-2.0-flash";
+// Update to ensure compatibility with the installed version
+const MODEL_NAME = "gemini-1.5-flash";
 
 // Initialize the Gemini API client
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
