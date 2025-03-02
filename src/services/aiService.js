@@ -9,33 +9,23 @@ const openai = new OpenAI({
   apiKey: OPENROUTER_API_KEY,
   dangerouslyAllowBrowser: true, // Required for browser usage
   defaultHeaders: {
-    'HTTP-Referer': window.location.origin, // Uses the app's origin as the referer
-    'X-Title': 'BUNTHEON Education App', // App name for OpenRouter rankings
+    'HTTP-Referer': window.location.origin,
+    'X-Title': 'BUNTHEON Education App',
   },
 });
 
 export const sendMessage = async (messages) => {
   try {
     console.log("Sending message to OpenRouter using OpenAI client...");
-    console.log("API Key:", OPENROUTER_API_KEY.substring(0, 10) + "...");
-    console.log("Messages:", messages);
     
     const completion = await openai.chat.completions.create({
       model: MODEL,
       messages: messages,
     });
-
-    console.log("Response received successfully:", completion);
     
     return completion.choices[0].message.content;
   } catch (error) {
     console.error('Error calling AI service:', error);
-    if (error.status) {
-      console.error(`Status code: ${error.status}`);
-    }
-    if (error.response) {
-      console.error('Error response:', error.response);
-    }
     throw error;
   }
 };
