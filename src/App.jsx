@@ -5,9 +5,10 @@ import { AppProvider } from './contexts/AppContext';
 
 // Layout Components
 import Header from './components/Layout/Header';
-import Navigation from './components/Layout/Navigation';
+import BottomNav from './components/Navigation/BottomNav';
 
 // Page Components
+import HomePage from './components/Home/HomePage';
 import PromptsPage from './components/Prompts/PromptsPage';
 import DictionaryPage from './components/Dictionary/DictionaryPage';
 import ExamPapersPage from './components/ExamPapers/ExamPapersPage';
@@ -31,6 +32,7 @@ const App = () => {
           <Header />
           <main className="flex-grow container mx-auto px-4 py-2 mb-16">
             <Routes>
+              <Route path="/" element={<HomePage />} />
               <Route path="/prompts" element={<PromptsPage />} />
               <Route path="/dictionary" element={<DictionaryPage />} />
               <Route path="/exam-papers" element={<ExamPapersPage />} />
@@ -38,7 +40,7 @@ const App = () => {
               <Route path="/chat" element={<ChatPage />} />
             </Routes>
           </main>
-          <Navigation />
+          <BottomNav />
         </div>
       </Router>
     </AppProvider>

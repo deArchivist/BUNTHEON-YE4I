@@ -1,18 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../contexts/AppContext';
-import { HiOutlineClipboard, HiOutlineBookmark, HiOutlineBookmarkAlt } from 'react-icons/hi';
 
 const PromptCard = ({ prompt, onSave, isSaved }) => {
   const navigate = useNavigate();
   const { setCurrentPrompt } = useContext(AppContext);
-  const [copied, setCopied] = useState(false);
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(prompt.content);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const handleUsePrompt = () => {
     // Set the current prompt and navigate to chat page instead of browser
