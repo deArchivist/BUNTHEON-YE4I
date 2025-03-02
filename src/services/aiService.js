@@ -1,56 +1,70 @@
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const OPENROUTER_API_KEY = "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";
-const MODEL = "deepseek/deepseek-r1-distill-llama-70b:free";
+// API key for Gemini
+const GEMINI_API_KEY = "AIzaSyD6G2FO1irISjGoyds6jXXrO7MNmY3zNt0";
+const MODEL_NAME = "gemini-1.5-flash";
 
-// Initialize OpenAI client with OpenRouter configuration
-const openai = new OpenAI({
-  baseURL: 'https://openrouter.ai/api/v1',
-  apiKey: OPENROUTER_API_KEY,
-  dangerouslyAllowBrowser: true, // Required for browser usage
-  defaultHeaders: {
-    'HTTP-Referer': window.location.href, // Full URL instead of just origin
-    'X-Title': 'BUNTHEON Education App',
-    'Content-Type': 'application/json',
-  },
-});
+// Initialize the Gemini API client
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 export const sendMessage = async (messages) => {
   try {
-    console.log("Sending message to OpenRouter using OpenAI client...");
-    
-    // Verify we have an API key before making the request
-    if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === "") {
-      throw new Error("API key is missing. Please set a valid OpenRouter API key.");
+    console.log("Sending message to Google Gemini API...");
+
+    // Verify we have an API key
+    if (!GEMINI_API_KEY || GEMINI_API_KEY === "") {
+      throw new Error("API key is missing. Please set a valid Gemini API key.");
     }
+
+    // Get the model
+    const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+
+    // Format messages for Gemini
+    // Gemini expects a different format than OpenAI, so we need to convert
+    const formattedMessages = formatMessagesForGemini(messages);
+
+    // Generate content
+    const result = await model.generateContent(formattedMessages);
+    const response = result.response.text();
     
-    const completion = await openai.chat.completions.create({
-      model: MODEL,
-      messages: messages,
-      max_tokens: 1000, // Adding reasonable defaults
-      temperature: 0.7,
-      headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`, // Explicitly include auth header
-      },
-    });
-    
-    if (!completion.choices || completion.choices.length === 0) {
+    if (!response) {
       throw new Error("Received empty response from AI service");
     }
     
-    return completion.choices[0].message.content;
+    return response;
   } catch (error) {
-    console.error('Error calling AI service:', error);
+    console.error('Error calling Gemini AI service:', error);
     
     // Enhanced error reporting
-    if (error.status === 401) {
+    if (error.message.includes("401") || error.message.includes("403")) {
       console.error('Authentication failed: Check your API key');
-    } else if (error.status === 429) {
+    } else if (error.message.includes("429")) {
       console.error('Rate limit exceeded: Too many requests');
-    } else if (error.status >= 500) {
-      console.error('OpenRouter server error: Try again later');
+    } else if (error.message.includes("500")) {
+      console.error('Gemini server error: Try again later');
     }
     
     throw error;
   }
 };
+
+// Helper function to format messages for Gemini
+function formatMessagesForGemini(messages) {
+  // For a simple implementation, we'll concatenate all messages into a single prompt
+  // This is a simplified approach - for more complex conversations, 
+  // a more sophisticated formatting would be needed
+  
+  let prompt = "";
+  
+  messages.forEach(msg => {
+    const role = msg.role === "user" ? "User: " : "Assistant: ";
+    prompt += `${role}${msg.content}\n\n`;
+  });
+  
+  // Add a final prompt for the assistant to continue
+  if (messages.length > 0 && messages[messages.length - 1].role === "user") {
+    prompt += "Assistant: ";
+  }
+  
+  return prompt;
+}
