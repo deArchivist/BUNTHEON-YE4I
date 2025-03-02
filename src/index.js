@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import './styles/tailwind.css';
 import App from './App';
 import { AppProvider } from './contexts/AppContext';
-import reportWebVitals from './reportWebVitals';
 
 // Set up error logging
 if (process.env.NODE_ENV === 'production') {
@@ -23,7 +22,6 @@ try {
   const root = createRoot(container);
   
   // Render with a simple try-catch for better error reporting
-  // REMOVED BrowserRouter from here to avoid conflict with App.jsx
   root.render(
     <React.StrictMode>
       <AppProvider>
@@ -44,4 +42,4 @@ try {
      <button onclick="window.location.reload()">Try Again</button>`;
 }
 
-reportWebVitals();
+// Remove reportWebVitals since we don't need it
