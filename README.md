@@ -60,3 +60,18 @@ A comprehensive educational companion designed as a Telegram Mini App to help st
 
 ### Building for Production
 
+## Railway Deployment
+
+This application is configured to be deployed on Railway. Follow these steps to deploy:
+
+1. Fork or clone this repository
+2. Create a new project in Railway from your GitHub repository
+3. Add the following environment variables in Railway:
+   - `REACT_APP_OPENROUTER_API_KEY`: Your OpenRouter API key
+
+Railway will automatically detect the configuration in `railway.json` and deploy your application.
+
+### API Key Security
+
+The OpenRouter API key should be set as an environment variable in Railway's dashboard. Do not commit your actual API key to the repository.
+

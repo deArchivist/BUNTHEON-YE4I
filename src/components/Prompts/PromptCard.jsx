@@ -1,51 +1,53 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../contexts/AppContext';
 import { HiOutlineClipboard, HiOutlineBookmark, HiOutlineBookmarkAlt } from 'react-icons/hi';
 
 const PromptCard = ({ prompt, onSave, isSaved }) => {
+  const navigate = useNavigate();
+  const { setCurrentPrompt } = useContext(AppContext);
   const [copied, setCopied] = useState(false);
-  
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(prompt.content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleUsePrompt = () => {
+    // Set the current prompt and navigate to chat page instead of browser
+    setCurrentPrompt(prompt);
+    navigate('/chat');
+  };
+
   return (
-    <div className="pixel-card rounded-lg">
+    <div className="bg-white rounded-lg shadow-md p-4 border border-gray-200">
       <div className="flex justify-between items-start">
-        <h3 className="text-lg font-semibold mb-1">{prompt.title}</h3>
-        <span className="text-xs px-2 py-1 bg-gray-100 rounded-full">
+        <h3 className="font-semibold text-lg mb-2">{prompt.title}</h3>
+        <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
           {prompt.category}
         </span>
       </div>
       
-      <p className="text-gray-700 my-2 whitespace-pre-line">{prompt.content}</p>
+      <p className="text-gray-600 mb-4 text-sm">{prompt.content}</p>
       
-      <div className="flex justify-between mt-3">
-        <button
-          className="flex items-center text-gray-600 hover:text-primary"
-          onClick={copyToClipboard}
+      <div className="flex justify-between">
+        <button 
+          onClick={handleUsePrompt} 
+          className="bg-primary text-white px-4 py-1 rounded-md text-sm"
         >
-          <HiOutlineClipboard className="mr-1" />
-          {copied ? 'Copied!' : 'Copy'}
+          Use Prompt
         </button>
         
-        <button
-          className={`flex items-center ${isSaved ? 'text-primary' : 'text-gray-600 hover:text-primary'}`}
-          onClick={onSave}
-          disabled={isSaved}
+        <button 
+          onClick={() => onSave()} 
+          className={`px-3 py-1 rounded-md text-sm border ${
+            isSaved 
+              ? 'bg-gray-100 text-gray-500 border-gray-300' 
+              : 'bg-white text-primary border-primary'
+          }`}
         >
-          {isSaved ? (
-            <>
-              <HiOutlineBookmarkAlt className="mr-1" />
-              Saved
-            </>
-          ) : (
-            <>
-              <HiOutlineBookmark className="mr-1" />
-              Save
-            </>
-          )}
+          {isSaved ? 'Saved' : 'Save'}
         </button>
       </div>
     </div>

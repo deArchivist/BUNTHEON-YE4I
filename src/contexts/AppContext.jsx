@@ -4,12 +4,27 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  // User data state
-  const [userData, setUserData] = useLocalStorage('user', {
-    savedPrompts: [],
-    examPapers: [],
-    reminders: []
+  // Load user data from localStorage or use default values
+  const [userData, setUserData] = useState(() => {
+    const savedData = localStorage.getItem('userData');
+    return savedData ? JSON.parse(savedData) : {
+      savedPrompts: [],
+      dictionary: [],
+      examPapers: [],
+      reminders: []
+    };
   });
+
+  // Current prompt for chat integration
+  const [currentPrompt, setCurrentPrompt] = useState(null);
+  
+  // Chat conversation history
+  const [chatHistory, setChatHistory] = useState([]);
+
+  // Save user data to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('userData', JSON.stringify(userData));
+  }, [userData]);
 
   // Dictionary state
   const [dictionaryTerms, setDictionaryTerms] = useState([]);
@@ -33,11 +48,21 @@ export const AppProvider = ({ children }) => {
     loadDictionary();
   }, []);
 
-  // Prompts management
+  // Save a prompt to user's saved prompts
   const savePrompt = (prompt) => {
+    if (!userData.savedPrompts.some(p => p.id === prompt.id)) {
+      setUserData(prev => ({
+        ...prev,
+        savedPrompts: [...prev.savedPrompts, prompt]
+      }));
+    }
+  };
+
+  // Remove a prompt from saved prompts
+  const removePrompt = (promptId) => {
     setUserData(prev => ({
       ...prev,
-      savedPrompts: [...prev.savedPrompts, prompt]
+      savedPrompts: prev.savedPrompts.filter(p => p.id !== promptId)
     }));
   };
 
@@ -62,9 +87,15 @@ export const AppProvider = ({ children }) => {
 
   const value = {
     userData,
+    setUserData,
+    savePrompt,
+    removePrompt,
+    currentPrompt,
+    setCurrentPrompt,
+    chatHistory,
+    setChatHistory,
     dictionaryTerms,
     isLoading,
-    savePrompt,
     addReminder,
     removeReminder
   };

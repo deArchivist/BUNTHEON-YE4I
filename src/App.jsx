@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import WebApp from '@twa-dev/sdk'; // FIXED: Changed from incorrect import { WebApp }
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import WebApp from '@twa-dev/sdk';
+import { AppProvider } from './contexts/AppContext';
 
 // Layout Components
 import Header from './components/Layout/Header';
@@ -12,6 +13,7 @@ import PromptsPage from './components/Prompts/PromptsPage';
 import DictionaryPage from './components/Dictionary/DictionaryPage';
 import ExamPapersPage from './components/ExamPapers/ExamPapersPage';
 import RemindersPage from './components/Reminders/RemindersPage';
+import ChatPage from './components/Chat/ChatPage';
 
 const App = () => {
   useEffect(() => {
@@ -24,19 +26,24 @@ const App = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-grow container mx-auto px-4 py-2 mb-16">
-        <Routes>
-          <Route path="/" element={<BrowserPage />} />
-          <Route path="/prompts" element={<PromptsPage />} />
-          <Route path="/dictionary" element={<DictionaryPage />} />
-          <Route path="/exam-papers" element={<ExamPapersPage />} />
-          <Route path="/reminders" element={<RemindersPage />} />
-        </Routes>
-      </main>
-      <Navigation />
-    </div>
+    <AppProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow container mx-auto px-4 py-2 mb-16">
+            <Routes>
+              <Route path="/" element={<BrowserPage />} />
+              <Route path="/prompts" element={<PromptsPage />} />
+              <Route path="/dictionary" element={<DictionaryPage />} />
+              <Route path="/exam-papers" element={<ExamPapersPage />} />
+              <Route path="/reminders" element={<RemindersPage />} />
+              <Route path="/chat" element={<ChatPage />} />
+            </Routes>
+          </main>
+          <Navigation />
+        </div>
+      </Router>
+    </AppProvider>
   );
 };
 
